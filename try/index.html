@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大脑单细胞与空间转录组数据库</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme-classic-blue.css" id="theme-classic-blue" disabled>
+    <link rel="stylesheet" href="theme-clean-gray.css" id="theme-clean-gray" disabled>
+    <link rel="stylesheet" href="theme-vibrant-teal.css" id="theme-vibrant-teal" disabled>
+    <link rel="stylesheet" href="theme-high-contrast.css" id="theme-high-contrast" disabled>
+
+</head>
+<body>
+    <!-- 顶部导航区 -->
+    <nav class="top-nav">
+        <div class="logo-area">
+            <div class="logo">脑</div>
+            <div class="logo-text">大脑单细胞与空间转录组数据库</div>
+        </div>
+        <div class="nav-menu">
+            <div class="nav-item active" data-page="home">首页</div>
+            <div class="nav-item" data-page="query">数据查询</div>
+            <div class="nav-item" data-page="visualization">可视化分析</div>
+            <div class="nav-item" data-page="tools">在线工具</div>
+            <div class="nav-item" data-page="download">数据下载</div>
+            <div class="nav-item" data-page="help">帮助中心</div>
+        </div>
+        <div class="right-tools">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="搜索基因、样本、DOI...">
+            </div>
+            <div class="theme-switcher">
+                <select id="themeSelector" class="theme-select">
+                    <option value="theme-classic-blue">经典科研蓝调</option>
+                    <option value="theme-clean-gray">清新学术浅灰</option>
+                    <option value="theme-vibrant-teal">活力科研青绿</option>
+                    <option value="theme-high-contrast">高对比度无障碍</option>
+                </select>
+            </div>
+            <div class="user-center">
+                <span>用</span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 主内容区 -->
+    <div class="main-container">
+        <!-- 左侧功能区 -->
+        <div class="left-panel" id="leftPanel">
+            <div class="panel-header">
+                <div class="panel-title">功能面板</div>
+                <button class="collapse-btn" id="collapseBtn">≡</button>
+            </div>
+            
+            <!-- 数据查询条件面板 -->
+            <div class="panel-content" id="queryPanel">
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>数据维度</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">数据类型</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="data-sc">
+                                    <label for="data-sc">单细胞转录组</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="data-spatial">
+                                    <label for="data-spatial">空间转录组</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="data-multi">
+                                    <label for="data-multi">多组学整合</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">测序平台</label>
+                            <select class="filter-select">
+                                <option value="">全部</option>
+                                <option value="10x">10x Genomics</option>
+                                <option value="smart-seq2">Smart-seq2</option>
+                                <option value="visium">Visium</option>
+                                <option value="slide-seq">Slide-seq</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>样本维度</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">物种</label>
+                            <select class="filter-select">
+                                <option value="">全部</option>
+                                <option value="human">人类</option>
+                                <option value="mouse">小鼠</option>
+                                <option value="rat">大鼠</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">脑区</label>
+                            <select class="filter-select">
+                                <option value="">全部</option>
+                                <option value="hippocampus">海马体</option>
+                                <option value="cortex">大脑皮层</option>
+                                <option value="striatum">纹状体</option>
+                                <option value="cerebellum">小脑</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">发育阶段</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stage-embryonic">
+                                    <label for="stage-embryonic">胚胎期</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stage-postnatal">
+                                    <label for="stage-postnatal">出生后</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stage-adult">
+                                    <label for="stage-adult">成年</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stage-aged">
+                                    <label for="stage-aged">老年</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>分析维度</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">基因</label>
+                            <input type="text" class="filter-input" placeholder="输入基因名或ID">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">表达量阈值</label>
+                            <input type="number" class="filter-input" placeholder="最小值">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary">查询</button>
+                    <button class="btn btn-secondary">重置</button>
+                    <button class="btn btn-secondary">保存条件</button>
+                </div>
+            </div>
+            
+            <!-- 可视化参数配置面板 -->
+            <div class="panel-content" id="visualizationPanel" style="display: none;">
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>图表类型选择</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">可视化类型</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="radio" name="viz-type" id="viz-umap" checked>
+                                    <label for="viz-umap">UMAP图</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="radio" name="viz-type" id="viz-spatial">
+                                    <label for="viz-spatial">空间热图</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="radio" name="viz-type" id="viz-joint">
+                                    <label for="viz-joint">联合关联图</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>数据筛选</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">数据集</label>
+                            <select class="filter-select">
+                                <option value="">选择数据集</option>
+                                <option value="dataset1">人类海马体单细胞转录组数据集</option>
+                                <option value="dataset2">小鼠大脑皮层空间转录组数据集</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">目标基因</label>
+                            <input type="text" class="filter-input" placeholder="输入基因名">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">细胞类型</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cell-type1">
+                                    <label for="cell-type1">神经元</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cell-type2">
+                                    <label for="cell-type2">胶质细胞</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cell-type3">
+                                    <label for="cell-type3">内皮细胞</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>参数调整</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">点大小</label>
+                            <input type="range" class="filter-input" min="1" max="10" value="5">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">透明度</label>
+                            <input type="range" class="filter-input" min="0" max="100" value="70">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">配色方案</label>
+                            <select class="filter-select">
+                                <option value="viridis">Viridis</option>
+                                <option value="plasma">Plasma</option>
+                                <option value="inferno">Inferno</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary">更新图表</button>
+                    <button class="btn btn-secondary">导出图片</button>
+                </div>
+            </div>
+            
+            <!-- 在线工具参数面板 -->
+            <div class="panel-content" id="toolsPanel" style="display: none;">
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>工具选择</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">分析工具</label>
+                            <select class="filter-select">
+                                <option value="">选择工具</option>
+                                <option value="deg">差异基因分析</option>
+                                <option value="enrichment">富集分析</option>
+                                <option value="cellcomm">细胞通讯分析</option>
+                                <option value="trajectory">轨迹分析</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>数据导入</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">数据源</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="radio" name="data-source" id="source-db" checked>
+                                    <label for="source-db">数据库数据集</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="radio" name="data-source" id="source-upload">
+                                    <label for="source-upload">上传本地文件</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">选择数据集</label>
+                            <select class="filter-select">
+                                <option value="">选择数据集</option>
+                                <option value="dataset1">人类海马体单细胞转录组数据集</option>
+                                <option value="dataset2">小鼠大脑皮层空间转录组数据集</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>算法参数</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">P值阈值</label>
+                            <input type="number" class="filter-input" value="0.05" step="0.01">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">FDR阈值</label>
+                            <input type="number" class="filter-input" value="0.1" step="0.01">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">富集数据库</label>
+                            <select class="filter-select">
+                                <option value="go">GO</option>
+                                <option value="kegg">KEGG</option>
+                                <option value="reactome">Reactome</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary">运行分析</button>
+                    <button class="btn btn-secondary">导出结果</button>
+                </div>
+            </div>
+            
+            <!-- 数据下载面板 -->
+            <div class="panel-content" id="downloadPanel" style="display: none;">
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>下载筛选</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">数据类型</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="dl-sc" checked>
+                                    <label for="dl-sc">单细胞数据</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="dl-spatial" checked>
+                                    <label for="dl-spatial">空间转录组数据</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="dl-analysis">
+                                    <label for="dl-analysis">分析结果</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">文件格式</label>
+                            <select class="filter-select">
+                                <option value="h5">H5</option>
+                                <option value="h5ad">H5AD</option>
+                                <option value="csv">CSV</option>
+                                <option value="xlsx">Excel</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>批量下载</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">选择物种</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="dl-human" checked>
+                                    <label for="dl-human">人类</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="dl-mouse" checked>
+                                    <label for="dl-mouse">小鼠</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="dl-rat">
+                                    <label for="dl-rat">大鼠</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary">开始下载</button>
+                    <button class="btn btn-secondary">下载历史</button>
+                </div>
+            </div>
+            
+            <!-- 帮助中心面板 -->
+            <div class="panel-content" id="helpPanel" style="display: none;">
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>快速导航</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <a href="#" class="filter-link">使用指南</a>
+                            <a href="#" class="filter-link">数据说明</a>
+                            <a href="#" class="filter-link">常见问题</a>
+                            <a href="#" class="filter-link">联系我们</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header">
+                        <span>相关资源</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <a href="#" class="filter-link">API文档</a>
+                            <a href="#" class="filter-link">数据更新日志</a>
+                            <a href="#" class="filter-link">GitHub仓库</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧内容区 -->
+        <div class="right-content">
+            <div class="tab-bar">
+                <div class="tab-item active">
+                    <span>数据查询结果</span>
+                    <span class="tab-close">×</span>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <!-- 各个页面内容 -->
+                <div class="page-content" id="homeContent">
+                    <div class="home-content">
+                        <h1 class="home-title">大脑单细胞与空间转录组数据库</h1>
+                        <p class="home-subtitle">整合单细胞与空间转录组数据的综合性脑科学研究平台</p>
+                        
+                        <div class="home-features">
+                            <div class="feature-card">
+                                <div class="feature-icon">🔬</div>
+                                <h3 class="feature-title">多组学数据整合</h3>
+                                <p class="feature-desc">整合单细胞转录组、空间转录组等多组学数据，提供全方位的脑科学研究视角。</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">📊</div>
+                                <h3 class="feature-title">高级可视化分析</h3>
+                                <p class="feature-desc">提供UMAP、空间热图、联合关联图等多种可视化方式，直观展示数据特征。</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">🔧</div>
+                                <h3 class="feature-title">在线分析工具</h3>
+                                <p class="feature-desc">集成差异基因分析、富集分析、细胞通讯分析等多种在线工具。</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">💾</div>
+                                <h3 class="feature-title">便捷数据下载</h3>
+                                <p class="feature-desc">提供标准化格式的数据下载，支持原始数据和分析结果的获取。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-content" id="queryContent">
+                    <!-- 概览面板 -->
+                    <div class="overview-panel fade-in">
+                        <h3>查询结果概览</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">248</div>
+                                <div class="stat-label">匹配数据集</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">3</div>
+                                <div class="stat-label">涉及物种</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">12</div>
+                                <div class="stat-label">覆盖脑区</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">8</div>
+                                <div class="stat-label">数据类型</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 数据展示区 -->
+                    <div class="data-display fade-in">
+                        <div class="display-controls">
+                            <h3>数据集列表</h3>
+                            <div class="view-toggle">
+                                <div class="toggle-btn active">卡片</div>
+                                <div class="toggle-btn">表格</div>
+                            </div>
+                        </div>
+                        
+                        <div class="data-grid">
+                            <div class="data-card">
+                                <div class="card-header">人类海马体单细胞转录组数据集</div>
+                                <div class="card-meta">
+                                    <div>物种: 人类</div>
+                                    <div>脑区: 海马体</div>
+                                    <div>数据类型: 单细胞转录组</div>
+                                    <div>发表年份: 2023</div>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="btn btn-sm btn-primary">可视化</button>
+                                    <button class="btn btn-sm btn-secondary">详情</button>
+                                    <button class="btn btn-sm btn-secondary">下载</button>
+                                </div>
+                            </div>
+                            
+                            <div class="data-card">
+                                <div class="card-header">小鼠大脑皮层空间转录组数据集</div>
+                                <div class="card-meta">
+                                    <div>物种: 小鼠</div>
+                                    <div>脑区: 大脑皮层</div>
+                                    <div>数据类型: 空间转录组</div>
+                                    <div>发表年份: 2023</div>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="btn btn-sm btn-primary">可视化</button>
+                                    <button class="btn btn-sm btn-secondary">详情</button>
+                                    <button class="btn btn-sm btn-secondary">下载</button>
+                                </div>
+                            </div>
+                            
+                            <div class="data-card">
+                                <div class="card-header">人类纹状体多组学整合数据集</div>
+                                <div class="card-meta">
+                                    <div>物种: 人类</div>
+                                    <div>脑区: 纹状体</div>
+                                    <div>数据类型: 多组学整合</div>
+                                    <div>发表年份: 2022</div>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="btn btn-sm btn-primary">可视化</button>
+                                    <button class="btn btn-sm btn-secondary">详情</button>
+                                    <button class="btn btn-sm btn-secondary">下载</button>
+                                </div>
+                            </div>
+                            
+                            <div class="data-card">
+                                <div class="card-header">大鼠小脑单细胞转录组数据集</div>
+                                <div class="card-meta">
+                                    <div>物种: 大鼠</div>
+                                    <div>脑区: 小脑</div>
+                                    <div>数据类型: 单细胞转录组</div>
+                                    <div>发表年份: 2022</div>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="btn btn-sm btn-primary">可视化</button>
+                                    <button class="btn btn-sm btn-secondary">详情</button>
+                                    <button class="btn btn-sm btn-secondary">下载</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="pagination">
+                            <button class="page-btn">上一页</button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn">...</button>
+                            <button class="page-btn">10</button>
+                            <button class="page-btn">下一页</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-content" id="visualizationContent">
+                    <div class="visualization-content">
+                        <h2>可视化分析</h2>
+                        <p>选择数据集和可视化类型进行分析</p>
+                        
+                        <div class="visualization-tools">
+                            <div class="visualization-panel">
+                                <h3>单细胞可视化</h3>
+                                <p>UMAP、t-SNE等降维可视化</p>
+                            </div>
+                            <div class="visualization-panel">
+                                <h3>空间转录组可视化</h3>
+                                <p>空间表达热图、区域分析</p>
+                            </div>
+                            <div class="visualization-panel">
+                                <h3>联合分析可视化</h3>
+                                <p>空间区域与单细胞分群关联</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-content" id="toolsContent">
+                    <div class="tools-content">
+                        <h2>在线工具</h2>
+                        <p>使用集成的分析工具进行数据处理</p>
+                        
+                        <div class="tools-grid">
+                            <div class="tool-card">
+                                <h3 class="tool-header">差异基因分析</h3>
+                                <p class="tool-desc">识别不同条件下的差异表达基因，支持多种统计方法。</p>
+                                <button class="btn btn-primary">使用工具</button>
+                            </div>
+                            <div class="tool-card">
+                                <h3 class="tool-header">富集分析</h3>
+                                <p class="tool-desc">对差异基因进行功能富集分析，包括GO、KEGG等数据库。</p>
+                                <button class="btn btn-primary">使用工具</button>
+                            </div>
+                            <div class="tool-card">
+                                <h3 class="tool-header">细胞通讯分析</h3>
+                                <p class="tool-desc">分析细胞间的通讯网络，识别重要的信号通路。</p>
+                                <button class="btn btn-primary">使用工具</button>
+                            </div>
+                            <div class="tool-card">
+                                <h3 class="tool-header">轨迹分析</h3>
+                                <p class="tool-desc">推断细胞发育轨迹，了解细胞分化过程。</p>
+                                <button class="btn btn-primary">使用工具</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-content" id="downloadContent">
+                    <div class="download-content">
+                        <h2>数据下载</h2>
+                        <p>下载标准化格式的数据集和分析结果</p>
+                        
+                        <div class="download-categories">
+                            <div class="download-category">
+                                <h3 class="category-title">人类数据集</h3>
+                                <div class="download-item">
+                                    <span>人类海马体单细胞数据集</span>
+                                    <button class="btn btn-sm btn-primary">下载</button>
+                                </div>
+                                <div class="download-item">
+                                    <span>人类大脑皮层空间转录组数据集</span>
+                                    <button class="btn btn-sm btn-primary">下载</button>
+                                </div>
+                            </div>
+                            <div class="download-category">
+                                <h3 class="category-title">小鼠数据集</h3>
+                                <div class="download-item">
+                                    <span>小鼠全脑单细胞图谱</span>
+                                    <button class="btn btn-sm btn-primary">下载</button>
+                                </div>
+                                <div class="download-item">
+                                    <span>小鼠小脑空间转录组数据集</span>
+                                    <button class="btn btn-sm btn-primary">下载</button>
+                                </div>
+                            </div>
+                            <div class="download-category">
+                                <h3 class="category-title">分析结果</h3>
+                                <div class="download-item">
+                                    <span>细胞类型注释结果</span>
+                                    <button class="btn btn-sm btn-primary">下载</button>
+                                </div>
+                                <div class="download-item">
+                                    <span>差异基因分析结果</span>
+                                    <button class="btn btn-sm btn-primary">下载</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-content" id="helpContent">
+                    <div class="help-content">
+                        <h2>帮助中心</h2>
+                        
+                        <div class="help-section">
+                            <h3 class="help-title">使用指南</h3>
+                            <p>本数据库提供大脑单细胞与空间转录组数据的查询、分析和下载功能。用户可以通过顶部导航菜单访问不同的功能模块。</p>
+                            <p>在数据查询模块，您可以设置多维度的查询条件，包括数据类型、物种、脑区等。查询结果可以通过卡片或表格形式展示，并支持进一步的可视化分析。</p>
+                        </div>
+                        
+                        <div class="help-section">
+                            <h3 class="help-title">数据说明</h3>
+                            <p>本数据库整合了来自GEO、SRA、EGA等公共数据库的脑科学相关数据，包括单细胞转录组和空间转录组数据。所有数据均经过标准化处理，确保数据质量和一致性。</p>
+                        </div>
+                        
+                        <div class="help-section">
+                            <h3 class="help-title">常见问题</h3>
+                            <p><strong>Q: 如何引用本数据库？</strong></p>
+                            <p>A: 请使用数据库提供的引用格式，包括APA、MLA、GB/T 7714三种格式。</p>
+                            <p><strong>Q: 数据下载有什么限制？</strong></p>
+                            <p>A: 本数据库对学术用户免费开放，无下载限制。商业用户需要联系我们获取授权。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部信息区 -->
+    <footer class="footer">
+        <div class="footer-section">
+            <div class="footer-title">数据来源与伦理</div>
+            <div class="footer-content">
+                数据来源: GEO/SRA/EGA<br>
+                伦理审批: 2025-001
+            </div>
+        </div>
+        <div class="footer-section">
+            <div class="footer-title">版本与引用</div>
+            <div class="footer-content">
+                版本: v1.0.0 (2026-2-09)<br>
+                引用格式: APA/MLA/GB/T 7714
+            </div>
+        </div>
+        <div class="footer-section">
+            <div class="footer-title">技术支持</div>
+            <div class="footer-content">
+                邮箱: sinder@163.com<br>
+                GitHub: github.com/brain-db
+            </div>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
