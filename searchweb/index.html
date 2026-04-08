@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+    <title>分泌蛋白互作信息查询系统</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>分泌蛋白互作信息查询系统</h1>
+            <p class="subtitle">Secreted Protein Interaction Information Query System</p>
+        </header>
+
+        <main class="main-content">
+            <section class="search-section">
+                <div class="search-box">
+                    <label for="gene-input">输入基因 ID (Gene ID):</label>
+                    <div class="search-input-wrapper">
+                        <input type="text" id="gene-input" placeholder="例如: SS1G_02266" autocomplete="off">
+                        <button id="search-btn" class="btn btn-primary">查询</button>
+                    </div>
+                    <div id="autocomplete-container" class="autocomplete-container" style="display: none;">
+                        <div class="autocomplete-list"></div>
+                    </div>
+                    <p class="hint">支持模糊匹配，可输入部分基因名进行搜索</p>
+                </div>
+            </section>
+
+            <section class="results-section" id="results-section">
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>加载中...</p>
+                </div>
+
+                <div class="error-message" id="error-message" style="display: none;"></div>
+
+                <div class="results-container" id="results-container" style="display: none;">
+                    <div class="results-header">
+                        <h2>查询结果</h2>
+                        <span class="result-count" id="result-count"></span>
+                    </div>
+                    <div id="results-list"></div>
+                </div>
+
+                <div class="no-results" id="no-results" style="display: none;">
+                    <p>未找到匹配的蛋白信息</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>SEN ssinder</p>
+        </footer>
+    </div>
+
+    <script src="data/embedded_data.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/network.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
