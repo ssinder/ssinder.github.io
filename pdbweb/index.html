@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protein Structure Database</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/spriteSheetService.js"></script>
+    <script src="js/imageService.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Protein Structure Database</h1>
+        <p class="subtitle">Antimicrobial Protein Analysis Platform</p>
+    </header>
+
+    <main>
+        <section class="search-panel">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by protein name or keyword (e.g., Lysozyme, Antimicrobial)..." autocomplete="off">
+                <button id="searchBtn">Search</button>
+            </div>
+            <div id="suggestions" class="suggestions-box"></div>
+        </section>
+
+        <section class="filter-panel">
+            <div class="filter-group">
+                <label for="lengthMin">Sequence Length:</label>
+                <input type="number" id="lengthMin" placeholder="Min" min="0">
+                <span>-</span>
+                <input type="number" id="lengthMax" placeholder="Max" min="0">
+            </div>
+
+            <div class="filter-group">
+                <label for="organismSelect">Organism:</label>
+                <select id="organismSelect">
+                    <option value="">All Organisms</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="keywordSelect">Keyword:</label>
+                <select id="keywordSelect">
+                    <option value="">All Keywords</option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button id="applyFilterBtn">Apply Filters</button>
+                <button id="resetFilterBtn" class="secondary">Reset</button>
+            </div>
+        </section>
+
+        <section class="stats-panel">
+            <span id="totalCount">Total: 0</span>
+            <span id="filteredCount">Filtered: 0</span>
+        </section>
+
+        <section class="results-panel">
+            <div id="loadingIndicator" class="loading" style="display: none;">
+                Loading...
+            </div>
+            <div id="proteinGrid" class="protein-grid"></div>
+            <div id="noResults" class="no-results" style="display: none;">
+                No proteins found matching your criteria.
+            </div>
+        </section>
+    </main>
+
+    <div id="proteinModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="js/dataService.js"></script>
+    <script src="js/filterService.js"></script>
+    <script src="js/statisticsService.js"></script>
+    <script src="js/sequenceAnalysisService.js"></script>
+    <script src="js/exportService.js"></script>
+    <script src="js/paginationService.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
