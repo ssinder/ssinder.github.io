@@ -1,0 +1,454 @@
+:root {
+    --primary-color: #0D47A1;
+    --primary-light: #1976D2;
+    --primary-dark: #0A2463;
+    --secondary-color: #F1F8E9;
+    --accent-color: #90CAF9;
+    --function-blue: #0D47A1;
+    --function-orange-red: #FF6D00;
+    --function-green: #00C853;
+    --function-purple: #AA00FF;
+    --function-cyan: #1DE9B6;
+    --function-yellow: #FFD600;
+    --function-red: #D50000;
+    --function-dark-gray: #424242;
+    --background-color: #F5F5F5;
+    --content-bg: #FFFFFF;
+    --text-color: #212121;
+    --text-secondary: #757575;
+    --border-color: #CCCCCC;
+    --white: #FFFFFF;
+    --hover-bg: #E3F2FD;
+    --table-alt-bg: #F1F8E9;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.top-nav {
+    background-color: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.logo {
+    background-color: var(--white);
+    color: var(--primary-color);
+}
+
+.logo-text {
+    color: var(--white);
+}
+
+.nav-item {
+    color: var(--white);
+}
+
+.nav-item:hover {
+    background-color: var(--primary-light);
+    color: var(--white);
+}
+
+.nav-item.active {
+    background-color: var(--primary-light);
+    color: var(--white);
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.search-input {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.search-input:focus {
+    border-color: var(--primary-color);
+    border-width: 3px;
+    width: 250px;
+    outline: none;
+}
+
+.user-center {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.user-center:hover {
+    background-color: var(--accent-color);
+}
+
+.theme-select {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.theme-select:hover {
+    border-color: var(--primary-color);
+}
+
+.theme-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    border-width: 3px;
+}
+
+.left-panel {
+    background-color: var(--secondary-color);
+    border-right: 2px solid var(--border-color);
+}
+
+.panel-title {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.collapse-btn {
+    color: var(--text-secondary);
+    font-size: 20px;
+}
+
+.collapse-btn:hover {
+    color: var(--primary-color);
+}
+
+.sub-panel {
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.sub-panel-header {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    font-weight: bold;
+}
+
+.filter-label {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.filter-input,
+.filter-select {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+    border-color: var(--primary-color);
+    border-width: 3px;
+    outline: none;
+}
+
+.filter-link {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.filter-link:hover {
+    background-color: var(--hover-bg);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-light);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: var(--hover-bg);
+}
+
+.right-content {
+    background-color: var(--content-bg);
+}
+
+.tab-bar {
+    background-color: var(--white);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.tab-item {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.tab-item:hover {
+    background-color: var(--hover-bg);
+}
+
+.tab-item.active {
+    background-color: var(--white);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.overview-panel {
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    border: 1px solid var(--border-color);
+}
+
+.stat-card {
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+}
+
+.stat-number {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.data-display {
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    border: 1px solid var(--border-color);
+}
+
+.toggle-btn {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.toggle-btn.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.data-card {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+}
+
+.data-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-color: var(--primary-color);
+}
+
+.card-header {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.card-meta {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.data-table {
+    border: 2px solid var(--border-color);
+}
+
+.data-table th {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    font-weight: bold;
+}
+
+.data-table td {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table tr:nth-child(even) {
+    background-color: var(--table-alt-bg);
+}
+
+.data-table tr:hover {
+    background-color: var(--hover-bg);
+}
+
+.page-btn {
+    background-color: var(--white);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+    font-weight: 500;
+}
+
+.page-btn.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
+.page-btn:hover:not(.active) {
+    background-color: var(--secondary-color);
+}
+
+.footer {
+    background-color: var(--background-color);
+    border-top: 2px solid var(--border-color);
+}
+
+.footer-title {
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.footer-content {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.loading::after {
+    border: 3px solid var(--secondary-color);
+    border-top: 3px solid var(--primary-color);
+}
+
+.home-title {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.home-subtitle {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.feature-card {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.feature-icon {
+    color: var(--primary-color);
+}
+
+.feature-desc {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.visualization-panel {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.tool-card {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.tool-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-color: var(--primary-color);
+}
+
+.tool-header {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.tool-desc {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.download-category {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.category-title {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.download-item {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.download-item:hover {
+    background-color: var(--secondary-color);
+}
+
+.help-section {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.help-title {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.help-content p {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.sub-panel-content {
+    background-color: var(--white);
+}
+
+.checkbox-item label {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.action-buttons {
+    gap: 10px;
+}
+
+.tab-close {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.tab-close:hover {
+    color: var(--function-red);
+}
+
+.display-controls {
+    background-color: var(--secondary-color);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.view-toggle {
+    border: 2px solid var(--border-color);
+}
+
+.toggle-btn {
+    background-color: var(--white);
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.toggle-btn.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+}

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="油菜多组学数据库 - 提供高质量的油菜全基因组、转录组、表观遗传组、代谢组等多组学数据查询、可视化和分析工具">
+    <meta name="keywords" content="油菜, 多组学, 转录组, 基因组, 表观遗传组, 代谢组, 生物信息学, 数据库">
+    <meta name="author" content="OilseedDB Team">
+    <title>油菜多组学数据库</title>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="assets/css/main.css" as="style">
+    <link rel="preload" href="assets/css/theme-classic-blue.css" as="style">
+    
+    <!-- 核心样式 -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    
+    <!-- 主题样式 -->
+    <link rel="stylesheet" href="assets/css/theme-mint-green.css" id="theme-mint-green">
+    <link rel="stylesheet" href="assets/css/theme-classic-blue.css" id="theme-classic-blue" disabled>
+    <link rel="stylesheet" href="assets/css/theme-clean-gray.css" id="theme-clean-gray" disabled>
+    <link rel="stylesheet" href="assets/css/theme-vibrant-teal.css" id="theme-vibrant-teal" disabled>
+    <link rel="stylesheet" href="assets/css/theme-high-contrast.css" id="theme-high-contrast" disabled>
+    
+    <!-- 配置文件 -->
+    <script src="config/config.js"></script>
+    <script src="utils/mock-data.js"></script>
+    <script src="utils/api.js"></script>
+    <script src="utils/storage.js"></script>
+    <script src="utils/utils.js"></script>
+    <script src="utils/validator.js"></script>
+    <script src="utils/error-boundary.js"></script>
+    
+    <!-- 功能模块 -->
+    <script src="modules/query/query.js"></script>
+    <script src="modules/visualization/visualization.js"></script>
+    <script src="modules/tools/tools.js"></script>
+    <script src="modules/download/download.js"></script>
+    <script src="modules/user/user.js"></script>
+    
+    <!-- 主应用 -->
+    <script src="assets/js/main.js"></script>
+</head>
+<body>
+    <!-- 顶部导航区 -->
+    <nav class="top-nav" role="navigation" aria-label="主导航">
+        <div class="logo-area">
+            <div class="logo" aria-label="Logo">
+                <img src="assets/images/logo.svg" alt="油菜多组学数据库">
+            </div>
+            <div class="logo-text">油菜多组学数据库</div>
+        </div>
+        
+        <div class="nav-menu" role="menubar">
+            <div class="nav-item active" data-page="home" role="menuitem" tabindex="0">首页</div>
+            <div class="nav-item" data-page="query" role="menuitem" tabindex="0">数据查询</div>
+            <div class="nav-item" data-page="visualization" role="menuitem" tabindex="0">可视化分析</div>
+            <div class="nav-item" data-page="tools" role="menuitem" tabindex="0">在线工具</div>
+            <div class="nav-item" data-page="download" role="menuitem" tabindex="0">数据下载</div>
+            <div class="nav-item" data-page="help" role="menuitem" tabindex="0">帮助中心</div>
+        </div>
+        
+        <div class="right-tools">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="搜索基因、样本、DOI..." aria-label="搜索框">
+                <button class="search-btn" id="searchBtn" aria-label="搜索">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="theme-switcher">
+                <select id="themeSelector" class="theme-select" aria-label="主题选择">
+                    <option value="theme-mint-green">清新薄荷绿</option>
+                    <option value="theme-classic-blue">经典深蓝夜</option>
+                    <option value="theme-clean-gray">清新学术浅灰</option>
+                    <option value="theme-vibrant-teal">活力科研青绿</option>
+                    <option value="theme-high-contrast">高对比度无障碍</option>
+                </select>
+            </div>
+            
+            <div class="user-center" role="button" tabindex="0" aria-label="用户中心">
+                <span>用</span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 主内容区 -->
+    <div class="main-container" role="main">
+        <!-- 左侧功能区 -->
+        <aside class="left-panel" id="leftPanel" aria-label="功能面板">
+            <div class="panel-header">
+                <div class="panel-title">功能面板</div>
+                <button class="collapse-btn" id="collapseBtn" aria-label="折叠/展开面板">≡</button>
+            </div>
+            
+            <!-- 数据查询条件面板 -->
+            <div class="panel-content" id="queryPanel" role="region" aria-label="数据查询条件">
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>数据维度</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">数据类型</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="data-genome" value="genome">
+                                    <label for="data-genome">基因组</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="data-rna" value="rna">
+                                    <label for="data-rna">转录组</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="data-multi" value="multi">
+                                    <label for="data-multi">多组学整合</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="platformSelect">测序平台</label>
+                            <select id="platformSelect" class="filter-select">
+                                <option value="">全部</option>
+                                <option value="10x">10x Genomics</option>
+                                <option value="smart-seq2">Smart-seq2</option>
+                                <option value="visium">Visium</option>
+                                <option value="slide-seq">Slide-seq</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>样本维度</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label" for="speciesSelect">物种</label>
+                            <select id="speciesSelect" class="filter-select">
+                                <option value="">全部</option>
+                                <option value="human">人类</option>
+                                <option value="mouse">小鼠</option>
+                                <option value="rat">大鼠</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="tissueSelect">组织</label>
+                            <select id="tissueSelect" class="filter-select">
+                                <option value="">全部</option>
+                                <option value="leaf">叶片</option>
+                                <option value="stem">茎</option>
+                                <option value="root">根</option>
+                                <option value="flower">花</option>
+                                <option value="seed">种子</option>
+                                <option value="silique">角果</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">发育阶段</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stage-seedling" value="seedling">
+                                    <label for="stage-seedling">苗期</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stage-vegetative" value="vegetative">
+                                    <label for="stage-vegetative">营养生长期</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stage-flowering" value="flowering">
+                                    <label for="stage-flowering">开花期</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stage-pod" value="pod">
+                                    <label for="stage-pod">角果发育期</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stage-maturity" value="maturity">
+                                    <label for="stage-maturity">成熟期</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>分析维度</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label" for="geneInput">基因</label>
+                            <input type="text" id="geneInput" class="filter-input" placeholder="输入基因名或ID" aria-label="基因输入">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="expressionThreshold">表达量阈值</label>
+                            <input type="number" id="expressionThreshold" class="filter-input" placeholder="最小值" min="0" step="0.1" aria-label="表达量阈值">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="queryBtn">查询</button>
+                    <button class="btn btn-secondary" id="resetBtn">重置</button>
+                    <button class="btn btn-secondary" id="saveConditionBtn">保存条件</button>
+                </div>
+            </div>
+            
+            <!-- 可视化参数配置面板 -->
+            <div class="panel-content" id="visualizationPanel" style="display: none;" role="region" aria-label="可视化参数配置">
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>图表类型选择</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">可视化类型</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="radio" name="viz-type" id="viz-umap" value="umap" checked>
+                                    <label for="viz-umap">UMAP降维</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="radio" name="viz-type" id="viz-tsne" value="tsne">
+                                    <label for="viz-tsne">t-SNE降维</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="radio" name="viz-type" id="viz-heatmap" value="heatmap">
+                                    <label for="viz-heatmap">热图</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="radio" name="viz-type" id="viz-violin" value="violin">
+                                    <label for="viz-violin">小提琴图</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="radio" name="viz-type" id="viz-feature" value="feature">
+                                    <label for="viz-feature">特征plot</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>数据筛选</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label" for="vizDatasetSelect">数据集</label>
+                            <select id="vizDatasetSelect" class="filter-select">
+                                <option value="">选择数据集</option>
+                                <option value="DS001">油菜叶片转录组数据集</option>
+                                <option value="DS002">油菜种子发育转录组数据集</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="vizGeneInput">目标基因</label>
+                            <input type="text" id="vizGeneInput" class="filter-input" placeholder="输入基因名" aria-label="目标基因输入">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">细胞类型</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cell-type1" value="mesophyll">
+                                    <label for="cell-type1">叶肉细胞</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cell-type2" value="epidermal">
+                                    <label for="cell-type2">表皮细胞</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cell-type3" value="vascular">
+                                    <label for="cell-type3">维管束细胞</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cell-type4" value="guard">
+                                    <label for="cell-type4">保卫细胞</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cell-type5" value="cortex">
+                                    <label for="cell-type5">皮层细胞</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>参数调整</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label" for="pointSizeRange">点大小</label>
+                            <input type="range" id="pointSizeRange" class="filter-input" min="1" max="10" value="5" aria-label="点大小">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="opacityRange">透明度</label>
+                            <input type="range" id="opacityRange" class="filter-input" min="0" max="100" value="70" aria-label="透明度">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="colorSchemeSelect">配色方案</label>
+                            <select id="colorSchemeSelect" class="filter-select">
+                                <option value="viridis">Viridis</option>
+                                <option value="plasma">Plasma</option>
+                                <option value="inferno">Inferno</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="updateChartBtn">更新图表</button>
+                    <button class="btn btn-secondary" id="exportImgBtn">导出图片</button>
+                </div>
+            </div>
+            
+            <!-- 在线工具参数面板 -->
+            <div class="panel-content" id="toolsPanel" style="display: none;" role="region" aria-label="在线工具参数">
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>工具选择</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label" for="toolSelect">分析工具</label>
+                            <select id="toolSelect" class="filter-select">
+                                <option value="">选择工具</option>
+                                <option value="deg">差异基因分析 (DEG)</option>
+                                <option value="enrichment">GO/KEGG富集分析</option>
+                                <option value="gsea">GSEA基因集富集</option>
+                                <option value="wgcna">WGCNA共表达分析</option>
+                                <option value="ppi">蛋白互作网络分析</option>
+                                <option value="trajectory">细胞轨迹分析</option>
+                                <option value="scvelo">RNA速率分析</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>数据导入</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">数据源</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="radio" name="data-source" id="source-db" value="database" checked>
+                                    <label for="source-db">数据库数据集</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="radio" name="data-source" id="source-upload" value="upload">
+                                    <label for="source-upload">上传本地文件</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="toolDatasetSelect">选择数据集</label>
+                            <select id="toolDatasetSelect" class="filter-select">
+                                <option value="">选择数据集</option>
+                                <option value="DS001">油菜叶片单细胞转录组</option>
+                                <option value="DS002">油菜种子发育转录组</option>
+                                <option value="DS003">油菜根系多组学数据</option>
+                                <option value="DS004">油菜花器官单细胞转录组</option>
+                                <option value="DS005">油菜角果发育基因组</option>
+                                <option value="DS006">油菜茎秆空间转录组</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>算法参数</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label" for="pValueInput">P值阈值</label>
+                            <input type="number" id="pValueInput" class="filter-input" value="0.05" step="0.01" min="0" max="1" aria-label="P值阈值">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="fdrInput">FDR阈值</label>
+                            <input type="number" id="fdrInput" class="filter-input" value="0.1" step="0.01" min="0" max="1" aria-label="FDR阈值">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="label" for="databaseSelect">富集数据库</label>
+                            <select id="databaseSelect" class="filter-select">
+                                <option value="go">GO</option>
+                                <option value="kegg">KEGG</option>
+                                <option value="reactome">Reactome</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="runAnalysisBtn">运行分析</button>
+                    <button class="btn btn-secondary" id="exportResultBtn">导出结果</button>
+                </div>
+            </div>
+            
+            <!-- 数据下载面板 -->
+            <div class="panel-content" id="downloadPanel" style="display: none;" role="region" aria-label="数据下载">
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>下载筛选</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <label class="filter-label">数据类型</label>
+                            <div class="filter-checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="dl-genome" value="genome" checked>
+                                    <label for="dl-genome">基因组数据</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="dl-rna" value="rna" checked>
+                                    <label for="dl-rna">转录组数据</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="dl-analysis" value="analysis">
+                                    <label for="dl-analysis">分析结果</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="formatSelect">文件格式</label>
+                            <select id="formatSelect" class="filter-select">
+                                <option value="h5">H5</option>
+                                <option value="h5ad">H5AD</option>
+                                <option value="csv">CSV</option>
+                                <option value="xlsx">Excel</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="startDownloadBtn">开始下载</button>
+                    <button class="btn btn-secondary" id="downloadHistoryBtn">下载历史</button>
+                </div>
+            </div>
+            
+            <!-- 帮助面板 -->
+            <div class="panel-content" id="helpPanel" style="display: none;" role="region" aria-label="帮助信息">
+                <div class="sub-panel">
+                    <div class="sub-panel-header" role="button" tabindex="0" aria-expanded="true">
+                        <span>帮助导航</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="sub-panel-content">
+                        <div class="filter-group">
+                            <a href="#help-intro" class="filter-link">使用指南</a>
+                            <a href="#help-query" class="filter-link">数据查询帮助</a>
+                            <a href="#help-viz" class="filter-link">可视化帮助</a>
+                            <a href="#help-tools" class="filter-link">工具使用帮助</a>
+                            <a href="#help-faq" class="filter-link">常见问题</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- 右侧内容区 -->
+        <main class="right-content" role="region" aria-label="主内容区">
+            <!-- 标签栏 -->
+            <div class="tab-bar" role="tablist"></div>
+            
+            <!-- 内容区域 -->
+            <div class="content-area" role="tabpanel">
+                <!-- 首页内容 -->
+                <div class="page-content active" id="homeContent">
+                    <div class="home-content">
+                        <div class="home-hero">
+                            <h1 class="home-title">油菜多组学数据库</h1>
+                            <p class="home-subtitle">提供高质量的油菜全基因组、转录组、表观遗传组、代谢组等多组学数据查询、可视化和分析工具</p>
+                        </div>
+                        
+                        <div class="stats-section">
+                            <div class="stats-grid">
+                                <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                                    <div class="stat-icon">
+                                        <img src="assets/images/icon-gene.svg" alt="基因">
+                                    </div>
+                                    <div class="stat-number" data-count="50000">0</div>
+                                    <div class="stat-label">基因数据</div>
+                                </div>
+                                <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                                    <div class="stat-icon">
+                                        <img src="assets/images/icon-sample.svg" alt="样本">
+                                    </div>
+                                    <div class="stat-number" data-count="1200">0</div>
+                                    <div class="stat-label">转录组样本</div>
+                                </div>
+                                <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                                    <div class="stat-icon">
+                                        <img src="assets/images/icon-doi.svg" alt="数据集">
+                                    </div>
+                                    <div class="stat-number" data-count="200">0</div>
+                                    <div class="stat-label">数据集</div>
+                                </div>
+                                <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                                    <div class="stat-icon">
+                                        <img src="assets/images/icon-species.svg" alt="物种">
+                                    </div>
+                                    <div class="stat-number" data-count="8">0</div>
+                                    <div class="stat-label">物种品系</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="home-features">
+                            <div class="feature-card" data-page="query">
+                                <div class="feature-icon">
+                                    <img src="assets/images/icon-query.svg" alt="数据查询">
+                                </div>
+                                <h3 class="feature-title">数据查询</h3>
+                                <p class="feature-desc">支持多维度数据筛选，快速查找目标数据集</p>
+                            </div>
+                            <div class="feature-card" data-page="visualization">
+                                <div class="feature-icon">
+                                    <img src="assets/images/icon-visualization.svg" alt="可视化分析">
+                                </div>
+                                <h3 class="feature-title">可视化分析</h3>
+                                <p class="feature-desc">提供UMAP、空间热图等多种可视化方式</p>
+                            </div>
+                            <div class="feature-card" data-page="tools">
+                                <div class="feature-icon">
+                                    <img src="assets/images/icon-tools.svg" alt="在线工具">
+                                </div>
+                                <h3 class="feature-title">在线工具</h3>
+                                <p class="feature-desc">差异分析、富集分析等专业分析工具</p>
+                            </div>
+                            <div class="feature-card" data-page="download">
+                                <div class="feature-icon">
+                                    <img src="assets/images/icon-download.svg" alt="数据下载">
+                                </div>
+                                <h3 class="feature-title">数据下载</h3>
+                                <p class="feature-desc">支持多种格式数据下载，方便离线分析</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 数据查询内容 -->
+                <div class="page-content" id="queryContent">
+                    <div class="overview-panel">
+                        <h2>数据查询</h2>
+                        <p>使用左侧筛选条件查询数据集</p>
+                    </div>
+                </div>
+                
+                <!-- 可视化分析内容 -->
+                <div class="page-content" id="visualizationContent">
+                    <div class="overview-panel">
+                        <h2>可视化分析</h2>
+                        <p>使用左侧参数配置生成可视化图表</p>
+                    </div>
+                </div>
+                
+                <!-- 在线工具内容 -->
+                <div class="page-content" id="toolsContent">
+                    <div class="overview-panel">
+                        <h2>在线工具</h2>
+                        <p>使用左侧参数配置运行分析工具</p>
+                    </div>
+                </div>
+                
+                <!-- 数据下载内容 -->
+                <div class="page-content" id="downloadContent">
+                    <div class="overview-panel">
+                        <h2>数据下载</h2>
+                        <p>使用左侧筛选条件选择要下载的数据</p>
+                    </div>
+                </div>
+                
+                <!-- 帮助中心内容 -->
+                <div class="page-content" id="helpContent">
+                    <div class="help-content">
+                        <div class="help-section" id="help-intro">
+                            <h2 class="help-title">使用指南</h2>
+                            <p>欢迎使用油菜多组学数据库。本数据库提供高质量的油菜全基因组、转录组、表观遗传组、代谢组等多组学数据查询、可视化和分析工具。</p>
+                        </div>
+                        
+                        <div class="help-section" id="help-query">
+                            <h2 class="help-title">数据查询帮助</h2>
+                            <p>在数据查询页面，您可以通过左侧的筛选条件面板设置查询条件，包括数据类型、物种、组织、发育阶段等。设置完成后，点击"查询"按钮执行查询。</p>
+                        </div>
+                        
+                        <div class="help-section" id="help-viz">
+                            <h2 class="help-title">可视化帮助</h2>
+                            <p>在可视化分析页面，您可以选择不同的可视化类型（UMAP图、空间热图、联合关联图），并配置相应的参数来生成可视化图表。</p>
+                        </div>
+                        
+                        <div class="help-section" id="help-tools">
+                            <h2 class="help-title">工具使用帮助</h2>
+                            <p>在线工具提供差异基因分析、富集分析、细胞通讯分析和轨迹分析等功能。选择相应的工具并配置参数后，点击"运行分析"按钮执行分析。</p>
+                        </div>
+                        
+                        <div class="help-section" id="help-faq">
+                            <h2 class="help-title">常见问题</h2>
+                            <p>如果您在使用过程中遇到问题，请查看常见问题部分或联系技术支持。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- 底部信息区 -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-section">
+            <div class="footer-title">关于我们</div>
+            <div class="footer-content">
+                油菜多组学数据库致力于为科研人员提供高质量的油菜全基因组、转录组、表观遗传组、代谢组等多组学数据资源。
+            </div>
+        </div>
+        <div class="footer-section">
+            <div class="footer-title">联系方式</div>
+            <div class="footer-content">
+                Email: sinder@oilseeddb.org<br>
+                电话: +86-xxx-xxxx-xxxx
+            </div>
+        </div>
+        <div class="footer-section">
+            <div class="footer-title">版权信息</div>
+            <div class="footer-content">
+                © 2026 sinder. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
